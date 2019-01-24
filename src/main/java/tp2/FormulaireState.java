@@ -53,7 +53,7 @@ public class FormulaireState extends HttpServlet {
 				if (customer.isEmpty()) {
 					throw new Exception("Client inconnu");
 				}
-				// Afficher les propriétés du client	
+				out.println("<form method=\"post\">\n");
                                 out.println("<select>\n");
 				 
   
@@ -64,10 +64,10 @@ public class FormulaireState extends HttpServlet {
                                     
                                 }
                                 ;
-	out.println("</select>\n");
-
-            out.println("</body>");
-            out.println("</html>");
+                                out.println("</select>\n");
+                                out.println("</form>\n");
+                                out.println("</body>");
+                                out.println("</html>");
         } catch (Exception ex) {
             Logger.getLogger(FormulaireState.class.getName()).log(Level.SEVERE, null, ex);
         }
