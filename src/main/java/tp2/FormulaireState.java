@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import simplejdbc.CustomerEntity;
 import simplejdbc.DAO;
+import simplejdbc.DAOException;
 import simplejdbc.DataSourceFactory;
 
 /**
@@ -43,33 +44,38 @@ public class FormulaireState extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet FormulaireState</title>");            
+            out.println("<title>Servlet FormulaireState</title>");
             out.println("</head>");
             out.println("<body>");
-           // out.println("<h1>Servlet FormulaireState at " + request.getContextPath() + "</h1>");
-           DAO dao = new DAO(DataSourceFactory.getDataSource());
-           List<String> customer = dao.listState();
-				//CustomerEntity customer = dao.listState();
-				if (customer.isEmpty()) {
-					throw new Exception("Client inconnu");
-				}
-				out.println("<form method=\"post\">\n");
-                                out.println("<select>\n");
-				 
-  
-                                for(String s : customer){
-                                    out.println("<option>\n");
-                                    out.println(s+"\n");
-                                    out.println("</option>\n");
-                                    
-                                }
-                                ;
-                                out.println("</select>\n");
-                                out.println("</form>\n");
-                                out.println("</body>");
-                                out.println("</html>");
-        } catch (Exception ex) {
-            Logger.getLogger(FormulaireState.class.getName()).log(Level.SEVERE, null, ex);
+            // out.println("<h1>Servlet FormulaireState at " + request.getContextPath() + "</h1>");
+            DAO dao = new DAO(DataSourceFactory.getDataSource());
+            try {
+                List<String> states = dao.listState();
+
+                if (states.isEmpty()) {
+                    throw new Exception("Client inconnu");
+                }
+                out.println("States");
+                out.println("<form action=ShowClientForStates>\n");
+                out.println("<select name=state>\n");
+
+                for (String s : states) {
+                    out.println("<option>\n");
+                    out.println(s + "\n");
+                    out.println("</option>\n");
+
+                }
+
+            } catch (Exception ex) {
+                out.printf("Erreur : %s", ex.getMessage());
+            }
+            out.println("</select>\n");
+            out.println("<input type=submit value=\"submit\">");
+            out.println("</form>\n");
+            out.println("</body>");
+            out.printf("<hr><a href='%s'>Retour au menu</a>", request.getContextPath());
+
+            out.println("</html>");
         }
     }
 
